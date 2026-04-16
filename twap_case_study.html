@@ -1,0 +1,452 @@
+
+<h2 class="sr-only">TWA Parts — Luxury vs Economy Division Case Study with Balanced Scorecards and Critical Evaluation</h2>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.page { padding: 1.5rem 0; max-width: 900px; }
+
+.company-header { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; border: 0.5px solid var(--color-border-tertiary); }
+.company-tag { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; color: var(--color-text-tertiary); text-transform: uppercase; margin-bottom: 6px; }
+.company-name { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+.company-sub { font-size: 13.5px; color: var(--color-text-secondary); line-height: 1.7; }
+
+.section-title { font-size: 11.5px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 1rem; margin-top: 1.75rem; }
+
+.tab-row { display: flex; gap: 6px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.tab { padding: 7px 16px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; font-size: 13px; color: var(--color-text-secondary); cursor: pointer; transition: all 0.15s; }
+.tab:hover { background: var(--color-background-secondary); }
+.tab.active { background: var(--color-background-primary); border-color: var(--color-border-primary); color: var(--color-text-primary); font-weight: 500; }
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+.div-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 580px) { .div-grid { grid-template-columns: 1fr; } }
+
+.div-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; }
+.div-card.luxury { border-top: 3px solid #378ADD; }
+.div-card.economy { border-top: 3px solid #1D9E75; }
+
+.div-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+.luxury .div-label { color: #185FA5; }
+.economy .div-label { color: #0F6E56; }
+
+.div-title { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 10px; }
+.div-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.75; }
+.div-body p { margin-bottom: 8px; }
+.div-body p:last-child { margin-bottom: 0; }
+
+.badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: var(--border-radius-md); margin-right: 4px; margin-bottom: 4px; }
+.badge-blue { background: #E6F1FB; color: #185FA5; }
+.badge-green { background: #E1F5EE; color: #0F6E56; }
+.badge-amber { background: #FAEEDA; color: #854F0B; }
+
+.kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
+@media (max-width: 580px) { .kpi-row { grid-template-columns: 1fr 1fr; } }
+.kpi-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.8rem; }
+.kpi-label { font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 3px; }
+.kpi-val { font-size: 19px; font-weight: 500; color: var(--color-text-primary); }
+.kpi-sub { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+
+.perspective { margin-bottom: 1.25rem; }
+.persp-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.persp-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.persp-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+
+.obj-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.obj-table th { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-align: left; padding: 4px 8px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.obj-table td { padding: 7px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); vertical-align: top; color: var(--color-text-secondary); line-height: 1.5; }
+.obj-table td:first-child { color: var(--color-text-primary); }
+.obj-table tr:last-child td { border-bottom: none; }
+
+.tick { display: inline-block; width: 18px; height: 18px; border-radius: 50%; font-size: 11px; font-weight: 500; text-align: center; line-height: 18px; }
+.tick-pass { background: #E1F5EE; color: #0F6E56; }
+.tick-fail { background: #FCEBEB; color: #A32D2D; }
+.tick-near { background: #FAEEDA; color: #854F0B; }
+
+.eval-block { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+.eval-q { font-size: 11.5px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+.eval-body { font-size: 13.5px; color: var(--color-text-secondary); line-height: 1.8; }
+.eval-body strong { color: var(--color-text-primary); font-weight: 500; }
+
+.verdict { border-radius: var(--border-radius-lg); padding: 1.25rem 1.5rem; margin-top: 10px; }
+.verdict-blue { background: #E6F1FB; border: 0.5px solid #85B7EB; }
+.verdict-green { background: #E1F5EE; border: 0.5px solid #5DCAA5; }
+.verdict-blue .v-label { color: #185FA5; }
+.verdict-green .v-label { color: #0F6E56; }
+.verdict-blue .v-title { color: #0C447C; }
+.verdict-green .v-title { color: #085041; }
+.verdict-blue .v-body { color: #185FA5; }
+.verdict-green .v-body { color: #0F6E56; }
+.v-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
+.v-title { font-size: 15px; font-weight: 500; margin-bottom: 5px; }
+.v-body { font-size: 13px; line-height: 1.7; }
+
+.map-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 580px) { .map-wrap { grid-template-columns: 1fr; } }
+.map-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; }
+.map-card.lux .map-div-label { color: #185FA5; }
+.map-card.eco .map-div-label { color: #0F6E56; }
+.map-div-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px; }
+
+.map-layer { margin-bottom: 8px; }
+.layer-name { font-size: 10.5px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
+.layer-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+.pill { font-size: 11.5px; padding: 4px 9px; border-radius: 20px; line-height: 1.3; }
+.pill-fin { background: #FAEEDA; color: #854F0B; }
+.pill-cust { background: #E6F1FB; color: #185FA5; }
+.pill-proc { background: #E1F5EE; color: #0F6E56; }
+.pill-lg { background: #EEEDFE; color: #534AB7; }
+.arrow-hint { text-align: center; font-size: 11px; color: var(--color-text-tertiary); margin: 4px 0; }
+
+.warn-box { background: #FAEEDA; border: 0.5px solid #FAC775; border-radius: var(--border-radius-md); padding: 10px 14px; margin-top: 10px; font-size: 13px; color: #854F0B; line-height: 1.6; }
+.divider { height: 0.5px; background: var(--color-border-tertiary); margin: 1.5rem 0; }
+</style>
+
+<div class="page">
+
+<div class="company-header">
+  <div class="company-tag">HBS Case 9-113-030 · Automotive Manufacturing</div>
+  <div class="company-name">TWA Parts (TWAP)</div>
+  <div class="company-sub">A $6.6B Tier 1 auto parts manufacturer, subsidiary of a U.S. diversified manufacturing conglomerate. Facing industry downturn and near-insolvency of key customers (GM, Chrysler), CEO Ellen Bright closed the mid-priced and truck divisions to concentrate resources on two divisions: Luxury (serving European OEMs) and Economy (targeting Asia-based OEMs). Financial target: ROCE of 8% and positive cash flow by 2011, with a near-term 2009 goal of lifting ROCE from –15% to –7%.</div>
+</div>
+
+<div class="tab-row">
+  <button class="tab active" onclick="switchTab('overview')">Company Overview</button>
+  <button class="tab" onclick="switchTab('strategy')">Strategy Maps</button>
+  <button class="tab" onclick="switchTab('scorecard')">Balanced Scorecards</button>
+  <button class="tab" onclick="switchTab('evaluation')">Critical Evaluation</button>
+</div>
+
+<!-- OVERVIEW -->
+<div id="tab-overview" class="panel active">
+  <div class="section-title">Division Profiles</div>
+  <div class="div-grid">
+    <div class="div-card luxury">
+      <div class="div-label">Luxury Division — Eckhard</div>
+      <div class="div-title">Innovation & Technology for European OEMs</div>
+      <div class="div-body">
+        <p><strong>Target customers:</strong> European luxury OEMs (high-end car brands) who prioritise new product innovation, technical expertise, and premium design.</p>
+        <p><strong>Core offerings:</strong> Electronics and interior components competing on technological superiority, product innovation, and design excellence.</p>
+        <p><strong>Market positioning:</strong> Product innovator and technical leader. OEMs rate "new product innovation" and "product design" as their top two buying criteria.</p>
+        <p><strong>Key challenges:</strong> High R&D and marketing spend; quality slippage emerging as a warning sign; only 10 of 20 targeted R&D partnerships secured.</p>
+      </div>
+      <div style="margin-top: 12px;">
+        <span class="badge badge-blue">Differentiation</span>
+        <span class="badge badge-blue">European luxury OEMs</span>
+        <span class="badge badge-amber">Quality risk</span>
+      </div>
+    </div>
+    <div class="div-card economy">
+      <div class="div-label">Economy Division — Kwon</div>
+      <div class="div-title">Lowest Lifetime Cost for Asia-Based OEMs</div>
+      <div class="div-body">
+        <p><strong>Target customers:</strong> Asia-based economy OEMs targeting price-sensitive end consumers who rank "low cost" and "fuel economy" highest.</p>
+        <p><strong>Core offerings:</strong> Electronics and interiors differentiated on high quality and lowest lifetime cost — not lowest initial price.</p>
+        <p><strong>Market positioning:</strong> Quality-at-value leader. Competing against rivals who focus only on lowest upfront cost by offering superior durability and lower maintenance.</p>
+        <p><strong>Key challenges:</strong> All financial targets missed in first 6 months; investing heavily in building operational capabilities before revenue benefits arrive.</p>
+      </div>
+      <div style="margin-top: 12px;">
+        <span class="badge badge-green">Quality differentiation</span>
+        <span class="badge badge-green">Asia growth markets</span>
+        <span class="badge badge-amber">Short-term losses</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">FYE 2008 Financials (Exhibit 1)</div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kpi-label">Luxury Revenue</div><div class="kpi-val">$2.9B</div><div class="kpi-sub">44% of total</div></div>
+    <div class="kpi-card"><div class="kpi-label">Economy Revenue</div><div class="kpi-val">$2.3B</div><div class="kpi-sub">34% of total</div></div>
+    <div class="kpi-card"><div class="kpi-label">Luxury Op. Income</div><div class="kpi-val">$208M</div><div class="kpi-sub">Profitable</div></div>
+    <div class="kpi-card"><div class="kpi-label">Economy Op. Income</div><div class="kpi-val">$20M</div><div class="kpi-sub">Barely profitable</div></div>
+  </div>
+
+  <div class="section-title">Near-Term Targets (2009)</div>
+  <div class="div-card luxury" style="border-top: none; border-left: 3px solid #378ADD; border-radius: var(--border-radius-md); margin-bottom: 8px;">
+    <div class="div-body"><p><strong>Luxury:</strong> ROCE from –7% to positive. Cut COGS from 95% to 90% of revenue. Grow gross margin to 14%. Increase plant utilisation toward 90%.</p></div>
+  </div>
+  <div class="div-card economy" style="border-top: none; border-left: 3px solid #1D9E75; border-radius: var(--border-radius-md);">
+    <div class="div-body"><p><strong>Economy:</strong> Same ROCE target of –7%. Build Asia market share. Establish quality and lifetime-cost reputation with OEM customers through TQM and JIT/lean investment.</p></div>
+  </div>
+</div>
+
+<!-- STRATEGY MAPS -->
+<div id="tab-strategy" class="panel">
+  <div class="section-title">Strategy Maps — Exhibit 3a & 4a (from PDF)</div>
+  <div class="map-wrap">
+    <div class="map-card lux">
+      <div class="map-div-label">Luxury Division (Eckhard)</div>
+      <div class="map-layer">
+        <div class="layer-name">Financial</div>
+        <div class="layer-pills">
+          <span class="pill pill-fin">Increase cash flow</span>
+          <span class="pill pill-fin">Increase ROCE</span>
+          <span class="pill pill-fin">Increase gross margin</span>
+          <span class="pill pill-fin">Increase revenues</span>
+        </div>
+      </div>
+      <div class="arrow-hint">↑ driven by</div>
+      <div class="map-layer">
+        <div class="layer-name">Customer</div>
+        <div class="layer-pills">
+          <span class="pill pill-cust">Maintain quality leadership</span>
+          <span class="pill pill-cust">Manage innovation</span>
+          <span class="pill pill-cust">Improve customer satisfaction</span>
+          <span class="pill pill-cust">Initiate R&D partnerships</span>
+        </div>
+      </div>
+      <div class="arrow-hint">↑ driven by</div>
+      <div class="map-layer">
+        <div class="layer-name">Internal Processes</div>
+        <div class="layer-pills">
+          <span class="pill pill-proc">Reduce raw materials cost</span>
+        </div>
+      </div>
+      <div class="arrow-hint">↑ driven by</div>
+      <div class="map-layer">
+        <div class="layer-name">Learning & Growth</div>
+        <div class="layer-pills">
+          <span class="pill pill-lg">Increase employee engagement</span>
+        </div>
+      </div>
+      <div class="warn-box">Only 1 process objective and 1 L&G objective — severely underdeveloped for an innovation-led strategy.</div>
+    </div>
+
+    <div class="map-card eco">
+      <div class="map-div-label">Economy Division (Kwon)</div>
+      <div class="map-layer">
+        <div class="layer-name">Financial</div>
+        <div class="layer-pills">
+          <span class="pill pill-fin">Increase cash flow</span>
+          <span class="pill pill-fin">Increase ROCE</span>
+          <span class="pill pill-fin">Increase gross margin</span>
+          <span class="pill pill-fin">Grow revenues</span>
+          <span class="pill pill-fin">Increase asset utilisation</span>
+        </div>
+      </div>
+      <div class="arrow-hint">↑ driven by</div>
+      <div class="map-layer">
+        <div class="layer-name">Customer</div>
+        <div class="layer-pills">
+          <span class="pill pill-cust">Grow market share</span>
+          <span class="pill pill-cust">Be lowest maintenance cost supplier</span>
+          <span class="pill pill-cust">Gain quality reputation</span>
+          <span class="pill pill-cust">Be high-quality provider</span>
+          <span class="pill pill-cust">Develop closer customer relationships</span>
+        </div>
+      </div>
+      <div class="arrow-hint">↑ driven by</div>
+      <div class="map-layer">
+        <div class="layer-name">Internal Processes</div>
+        <div class="layer-pills">
+          <span class="pill pill-proc">Improve durability</span>
+          <span class="pill pill-proc">Forecast OEM demand</span>
+          <span class="pill pill-proc">Increase subassembly life</span>
+          <span class="pill pill-proc">Eliminate defects</span>
+          <span class="pill pill-proc">Improve supplier performance</span>
+          <span class="pill pill-proc">Enhance electronic interchanges</span>
+          <span class="pill pill-proc">Train buyers on quality procurement</span>
+        </div>
+      </div>
+      <div class="arrow-hint">↑ driven by</div>
+      <div class="map-layer">
+        <div class="layer-name">Learning & Growth</div>
+        <div class="layer-pills">
+          <span class="pill pill-lg">Enhance TQM capabilities</span>
+          <span class="pill pill-lg">Transform workforce into JIT/lean experts</span>
+          <span class="pill pill-lg">Make JIT/lean a priority</span>
+          <span class="pill pill-lg">Align IT to support TQM & JIT</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCORECARDS -->
+<div id="tab-scorecard" class="panel">
+
+  <div class="section-title">Luxury Division — Scorecard Results (6 months to June 2009)</div>
+
+  <div class="perspective">
+    <div class="persp-header"><div class="persp-dot" style="background:#EF9F27;"></div><div class="persp-name">Financial</div></div>
+    <table class="obj-table">
+      <thead><tr><th>Objective</th><th>Metric</th><th>Target</th><th>Actual</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Increase ROCE</td><td>ROCE</td><td>–7%</td><td>+4%</td><td><span class="tick tick-pass">✓</span></td></tr>
+        <tr><td>Increase cash flow</td><td>YTD cash flow from operations</td><td>–$12M</td><td>+$8M</td><td><span class="tick tick-pass">✓</span></td></tr>
+        <tr><td>Increase revenue</td><td>YTD revenue</td><td>$1.3B</td><td>$1.2B</td><td><span class="tick tick-near">~</span></td></tr>
+        <tr><td>Increase gross margin</td><td>Gross margin %</td><td>14%</td><td>15%</td><td><span class="tick tick-pass">✓</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="perspective">
+    <div class="persp-header"><div class="persp-dot" style="background:#5DCAA5;"></div><div class="persp-name">Customer</div></div>
+    <table class="obj-table">
+      <thead><tr><th>Objective</th><th>Metric</th><th>Target</th><th>Actual</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Improve customer satisfaction</td><td>Global market share</td><td>5%</td><td>5%</td><td><span class="tick tick-pass">✓</span></td></tr>
+        <tr><td>Manage innovation</td><td>% rating "excellent" / # new products</td><td>85% / 50</td><td>83% / 50</td><td><span class="tick tick-near">~</span></td></tr>
+        <tr><td>Initiate R&D partnerships</td><td># customers with R&D partnerships</td><td>20</td><td>10</td><td><span class="tick tick-fail">✗</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="perspective">
+    <div class="persp-header"><div class="persp-dot" style="background:#85B7EB;"></div><div class="persp-name">Internal Processes</div></div>
+    <table class="obj-table">
+      <thead><tr><th>Objective</th><th>Metric</th><th>Target</th><th>Actual</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Reduce raw materials cost</td><td>Raw materials as % of revenue</td><td>65%</td><td>60%</td><td><span class="tick tick-pass">✓</span></td></tr>
+        <tr><td>Maintain quality leadership</td><td>Defect rate (PPM)</td><td>3 PPM</td><td>5 PPM</td><td><span class="tick tick-fail">✗</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="perspective">
+    <div class="persp-header"><div class="persp-dot" style="background:#AFA9EC;"></div><div class="persp-name">Learning & Growth</div></div>
+    <table class="obj-table">
+      <thead><tr><th>Objective</th><th>Metric</th><th>Target</th><th>Actual</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Increase employee engagement</td><td>% "very satisfied" with resources & training</td><td>80% / 80%</td><td>62% / 65%</td><td><span class="tick tick-fail">✗</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-title">Economy Division — Scorecard Results (6 months to June 2009)</div>
+
+  <div class="perspective">
+    <div class="persp-header"><div class="persp-dot" style="background:#EF9F27;"></div><div class="persp-name">Financial</div></div>
+    <table class="obj-table">
+      <thead><tr><th>Objective</th><th>Metric</th><th>Target</th><th>Actual</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Increase ROCE</td><td>ROCE</td><td>–7%</td><td>–12%</td><td><span class="tick tick-fail">✗</span></td></tr>
+        <tr><td>Increase cash flow</td><td>YTD cash flow from operations</td><td>–$12M</td><td>–$14M</td><td><span class="tick tick-fail">✗</span></td></tr>
+        <tr><td>Increase gross margin</td><td>Gross margin %</td><td>6%</td><td>4%</td><td><span class="tick tick-fail">✗</span></td></tr>
+        <tr><td>Grow revenues</td><td>YTD revenue</td><td>$1B</td><td>$0.9B</td><td><span class="tick tick-fail">✗</span></td></tr>
+        <tr><td>Increase asset utilisation</td><td>Asset turnover ratio</td><td>1.25</td><td>1.23</td><td><span class="tick tick-near">~</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="perspective">
+    <div class="persp-header"><div class="persp-dot" style="background:#5DCAA5;"></div><div class="persp-name">Customer</div></div>
+    <table class="obj-table">
+      <thead><tr><th>Objective</th><th>Metric</th><th>Target</th><th>Actual</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Grow market share</td><td>Global market share in economy segment</td><td>6%</td><td>5.9%</td><td><span class="tick tick-near">~</span></td></tr>
+        <tr><td>Be low-maintenance-cost supplier</td><td>% customers rating TWAP as lowest maintenance cost</td><td>80%</td><td>75%</td><td><span class="tick tick-near">~</span></td></tr>
+        <tr><td>Gain quality reputation</td><td>% customers ranking guarantee as "best in class"</td><td>75%</td><td>70%</td><td><span class="tick tick-near">~</span></td></tr>
+        <tr><td>Be high-quality provider</td><td>% customers rating TWAP "excellent" in quality</td><td>80%</td><td>79%</td><td><span class="tick tick-near">~</span></td></tr>
+        <tr><td>Develop closer customer relationships</td><td># customers with preferred supplier status</td><td>50</td><td>60</td><td><span class="tick tick-pass">✓</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="perspective">
+    <div class="persp-header"><div class="persp-dot" style="background:#85B7EB;"></div><div class="persp-name">Internal Processes</div></div>
+    <table class="obj-table">
+      <thead><tr><th>Objective</th><th>Metric</th><th>Target</th><th>Actual</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Improve durability</td><td>% top durability rating / % failing in field</td><td>65% / 7%</td><td>63% / 7%</td><td><span class="tick tick-near">~</span></td></tr>
+        <tr><td>Better forecast OEM demand</td><td>Stockouts / inventory cost reduction</td><td>4% / 35%</td><td>2% / 35%</td><td><span class="tick tick-pass">✓</span></td></tr>
+        <tr><td>Increase subassembly life</td><td>% passing 10-year life tests</td><td>75%</td><td>75%</td><td><span class="tick tick-pass">✓</span></td></tr>
+        <tr><td>Eliminate defects</td><td>Defect rate (PPM)</td><td>5 PPM</td><td>4 PPM</td><td><span class="tick tick-pass">✓</span></td></tr>
+        <tr><td>Improve supplier performance</td><td>% A-rated / avg delivery days</td><td>75% / 26</td><td>78% / 25</td><td><span class="tick tick-pass">✓</span></td></tr>
+        <tr><td>Enhance electronic interchanges</td><td>% orders via EDI</td><td>90%</td><td>95%</td><td><span class="tick tick-pass">✓</span></td></tr>
+        <tr><td>Train buyers on quality procurement</td><td>% buyers trained</td><td>20%</td><td>25%</td><td><span class="tick tick-pass">✓</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="perspective">
+    <div class="persp-header"><div class="persp-dot" style="background:#AFA9EC;"></div><div class="persp-name">Learning & Growth</div></div>
+    <table class="obj-table">
+      <thead><tr><th>Objective</th><th>Metric</th><th>Target</th><th>Actual</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Enhance TQM capabilities</td><td>% TQM-certified / # TQM engineers</td><td>50% / 60</td><td>53% / 65</td><td><span class="tick tick-pass">✓</span></td></tr>
+        <tr><td>Transform workforce (JIT/lean)</td><td>% JIT-trained / # JIT engineers</td><td>50% / 60</td><td>52% / 64</td><td><span class="tick tick-pass">✓</span></td></tr>
+        <tr><td>Make JIT/lean a priority</td><td>% pay tied to JIT/lean measures</td><td>5%</td><td>5%</td><td><span class="tick tick-pass">✓</span></td></tr>
+        <tr><td>Align IT to support TQM & JIT</td><td>% IT spending increase / % rating info adequate</td><td>20% / 40%</td><td>20% / 45%</td><td><span class="tick tick-pass">✓</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- EVALUATION -->
+<div id="tab-evaluation" class="panel">
+
+  <div class="eval-block">
+    <div class="eval-q">Q1 — Business Strategy of Each Division</div>
+    <div class="eval-body">
+      <p><strong>Luxury Division (Eckhard)</strong> follows a <strong>differentiation through product innovation</strong> strategy. European luxury OEMs — the division's primary customers — rank "new product innovation" and "product design" as their top buying criteria (Exhibit 2). Eckhard's strategy directly reflects this: compete by being the technology leader, not the cheapest option. Revenue grows through innovation-led customer satisfaction, and the goal is to secure deep R&D partnerships that create switching costs and lock in long-term revenue. Cost management (raw materials reduction) is secondary — a means to improve margins, not the core competitive weapon.</p>
+      <br>
+      <p><strong>Economy Division (Kwon)</strong> follows a <strong>quality-based cost leadership</strong> strategy — a deliberate contrast to competitors who focus on lowest initial purchase price. Kwon's insight is that Asia-based economy OEMs are ultimately hurt by poor-quality parts (warranty costs, field failures), so TWAP can win by offering the lowest total lifetime cost. This requires a long build-up: invest in TQM, lean manufacturing, JIT delivery, and supplier quality now so that the quality reputation and cost efficiency materialise over time. The strategy is fundamentally about building a durable competitive foundation, not maximising short-term margins.</p>
+    </div>
+  </div>
+
+  <div class="eval-block">
+    <div class="eval-q">Q2 — Comment on Strategy Maps & Scorecards — What Would You Change?</div>
+    <div class="eval-body">
+      <p><strong>Luxury Division — What works:</strong> The financial perspective is well-constructed and logically connected to customer objectives. The innovation and customer satisfaction metrics are appropriate for a luxury OEM-facing division. Gross margin as a KPI makes sense given the premium positioning.</p>
+      <br>
+      <p><strong>Luxury Division — What is weak:</strong> The strategy map is dangerously thin below the customer layer. With only <strong>one process objective</strong> (reduce raw materials cost) and <strong>one L&G objective</strong> (employee engagement), it fails to explain how innovation actually happens. For a division whose entire strategy rests on product leadership, there is no process-level objective for R&D cycle time, new product development, or quality control — yet defect rates are already slipping to 5 PPM against a 3 PPM target. The single L&G objective of "employee engagement" is generic and not causally linked to anything specific. It is not clear how higher engagement leads to more innovation.</p>
+      <br>
+      <p><strong>What to change — Luxury:</strong> Add process objectives around new product development speed, R&D investment effectiveness, and quality management. Add L&G objectives for technical talent hiring and innovation skill development. The R&D partnership target of 20 customers was missed badly (only 10 achieved) — this needed its own process initiative in the map, not just a customer-level metric.</p>
+      <br>
+      <p><strong>Economy Division — What works:</strong> Kwon's strategy map is comprehensive and causally coherent. The L&G layer (TQM training, JIT expertise, IT alignment) directly enables the process improvements (defect elimination, supplier quality, demand forecasting), which in turn support the customer value proposition (lowest lifetime cost, quality reputation), which logically drives financial improvement. This is textbook balanced scorecard logic, well-executed.</p>
+      <br>
+      <p><strong>Economy Division — What is weak:</strong> The scorecard is arguably <strong>too crowded</strong>. Seven process objectives and four L&G objectives make it difficult to prioritise. There is also no explicit linkage in the map showing how Asia market development (a geographic growth strategy) connects to the process and L&G investments — the map treats all markets as one. Additionally, the financial targets may have been set too ambitiously for a 6-month horizon given the scale of the transformation underway.</p>
+      <br>
+      <p><strong>What to change — Economy:</strong> Consolidate process objectives into 4–5 highest-impact items. Add a customer objective specifically tied to Asia OEM acquisition, with a matching process objective around geographic expansion or localisation capabilities.</p>
+    </div>
+  </div>
+
+  <div class="eval-block">
+    <div class="eval-q">Q3 — Which Manager Prepared a Better Strategy Map & Scorecard?</div>
+    <div class="eval-body">
+      <p><strong>Kwon (Economy Division) prepared a significantly better strategy map and balanced scorecard.</strong></p>
+      <br>
+      <p>A good strategy map must tell a coherent story: here is what we need to learn → so we can improve how we operate → so we can serve customers better → so we generate financial results. Kwon's map does exactly this. Every layer connects to the next. The objectives are specific, the metrics are measurable, and the initiatives are funded and traceable.</p>
+      <br>
+      <p>Eckhard's map is structurally broken. A division competing on innovation and quality leadership has one process objective (cost reduction) and one L&G objective (engagement). There is no process-level plan for how innovation happens, no talent strategy beyond a vague engagement survey, and no linkage between L&G and the customer layer. When the defect rate slips and only half the R&D partnerships are secured, the scorecard gives no diagnostic insight into why — because the underlying drivers were never mapped.</p>
+    </div>
+  </div>
+
+  <div class="eval-block">
+    <div class="eval-q">Q4 — Which Division Manager Performed Better?</div>
+    <div class="eval-body">
+      <p>This is the tension at the heart of the case. The answer depends on the <strong>time horizon</strong> and what you believe performance really means.</p>
+    </div>
+    <div style="height: 10px;"></div>
+    <div class="verdict verdict-blue">
+      <div class="v-label">Better short-term results</div>
+      <div class="v-title">Eckhard — Luxury Division</div>
+      <div class="v-body">ROCE: +4% vs –7% target (beat significantly). Cash flow: +$8M vs –$12M target. Gross margin: 15% vs 14% target. By pure financial metrics over 6 months, Eckhard clearly outperformed. However, quality slipped to 5 PPM (target: 3 PPM), only 10 of 20 R&D partnerships were secured, and employee engagement is critically low at 62%. These are leading indicators pointing to future trouble in an innovation-dependent business.</div>
+    </div>
+    <div style="height: 10px;"></div>
+    <div class="verdict verdict-green">
+      <div class="v-label">Better strategic execution</div>
+      <div class="v-title">Kwon — Economy Division</div>
+      <div class="v-body">Every financial target missed — ROCE at –12% vs –7%, cash flow –$14M vs –$12M. But nearly all process and L&G targets met or exceeded: defect rate at 4 PPM (beat 5 PPM target), suppliers 78% A-rated (beat 75%), EDI orders at 95% (beat 90%), preferred supplier relationships at 60 (beat target of 50), TQM and JIT certifications ahead of target. Kwon is building exactly the foundation the strategy requires.</div>
+    </div>
+    <div style="height: 12px;"></div>
+    <div class="eval-body">
+      <p><strong>Conclusion:</strong> On balance, <strong>Kwon performed better as a strategic manager</strong>, even though Eckhard produced better short-term financial results. The Economy Division's strategy explicitly requires upfront investment before financial payoff — the operational green lights indicate the strategy is on track. Eckhard's financial wins, by contrast, may have come partly at the expense of quality and talent investment, both of which are existential risks for a division that lives or dies by innovation. Ellen Bright should commend Eckhard on the financial results while issuing serious warnings on quality (5 PPM defects) and the R&D partnership shortfall. Kwon should be affirmed for the execution quality, but pressed on whether the financial lag is a timing issue or a deeper structural problem.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+</script>
